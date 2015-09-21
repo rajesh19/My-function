@@ -1,0 +1,31 @@
+def yeild_to_maturity(l,u,C,P,F,n):
+    """
+    
+    At discount
+    what must be the lower bound and what must be the upper bound if bond is issued at discount then its 
+    YTM is higher than its coupon rate such that l = Coupon rate what will be upper 
+    u = coupon rate + (Face_value - Price)/price
+    At premium
+    u = coupon rate
+    l = (Price-Face_value)/price
+    #########
+    P = price today
+    n is number of years till maturity
+    C  coupon rate
+    F is face value
+    
+    """
+    half = (u + l)/2.0  
+    epsilon = 0.001
+    balance = P
+    while abs(balance) >= epsilon:
+        balance = P - present_value(C,F,n,half)
+        if balance < 0:
+            l = half
+        else:
+            u = half
+        half = (l+u)/2.0
+           
+    half = round(half,4)
+    print('Yield To Maturity: ' + str(half))
+        
