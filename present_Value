@@ -1,0 +1,14 @@
+def present_value(C,F,n,i):
+    """ 
+    
+    C = coupon rate, if value is given then divide coupon payment by face value
+    F is the face value means this is the payment which investor will get at maturity 
+    n is no. of years till maturity
+    i is the interest rate
+    
+    """
+    coupon = C*F/100
+    i = i/100
+    r = 1/(1+i)**n
+    PresentValue = (coupon/i)*(1-r)+F/(1+i)**n
+    return PresentValue
