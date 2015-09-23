@@ -1,0 +1,21 @@
+import fred
+fred.key('89fbb670bc03036cb2a3f79b266bd4bc')
+import csv
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+data = fred.observations('USREC')#, observation_end= '2013-12-31', observation_start= '1947-07-04')
+
+a=data
+observations=a["observations"] #
+headers=observations[0].keys() 
+f = open('C:/Users/rajesh/Documents/US_recession1.csv', 'wb')
+writer = csv.writer(f)
+writer.writerow(headers) # to make sure your headings are date,realtime_start etc
+for data in observations:
+    row=[data[header] for header in headers] #will create the row in same order as headers
+    writer.writerow(row)
+my_data = pd.read_csv('C:/Users/rajesh/Documents/US_recession.csv',parse_dates=['date'],index_col=['date'],dayfirst=True)
+#my_data = [:,-1]
+my_data.plot(linestyle='-') 
+plt.show()
