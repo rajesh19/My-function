@@ -1,0 +1,12 @@
+N = 81;
+T = 61;
+%dep_wide = deposits;
+%dep_long = zeros(T*N,1);
+% residual_long = zeros(T*N,1);
+%data = data'; % only if data is of the form of N,T otherwise take data as it is
+If data is in N*T form then take transpose otherwise leave data as it is
+data = data1';
+data_long = zeros(T*N,1);
+for i = 1:N
+    data_long((i-1)*T+1:i*T,:)= data(1:T,i);
+end
