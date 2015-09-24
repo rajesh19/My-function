@@ -1,0 +1,8 @@
+% omit 2011 in WDI data so that we can have data for multiple of 5
+N = 81; % is the number of cross-sections
+
+data_new = zeros(length(data_old)-N,1);
+
+for i = 1:N
+	data_new((i-1)*T+1:i*T,1) = data_old((i-1)*T+i:i*T+i-1,1);
+end
