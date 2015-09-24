@@ -1,0 +1,9 @@
+T = 5;
+five_year_average = zeros(data_long/5,1);
+%It shows whole data in balanced form and ensure that actual T
+(means time for each cross section is multiple of 5)
+%Taking nanmean ensures then it doesnt take NaN values in Matlab. 
+
+for i = 1:length(data_long)/5
+    five_year_average(i,1) = nanmean(data_long((i-1)*T+1:i*T));
+end
