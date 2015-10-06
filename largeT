@@ -1,0 +1,9 @@
+%largeT creation
+kk = zeros(length(DATA),1);
+for id = 1:DATA(end,2)
+    for t = 1:length(DATA)
+        if DATA(t,2) == id
+            kk(t,1) = sum(DATA(:,2)==id);
+        end
+    end
+end
