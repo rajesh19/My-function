@@ -1,0 +1,19 @@
+N =103; % is the number of cross-sections
+z = xlsread('market capitalisation.xlsx', 'long form');              % five year aveages
+
+data_old = z;
+
+data_new1 = zeros(length(data_old)-2*N,cols(data_old));
+
+T = 60;
+
+for i = 1:cols(data_old);
+    
+        for j = 1:N
+            
+            data_new1((j-1)*T+1:j*T,i) = data_old(T*(j-1)+2*j:j*(T+2)-1,i);
+            
+        end
+        
+end
+
