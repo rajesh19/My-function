@@ -1,0 +1,33 @@
+# difference in difference estimation
+
+install.packages("dummies")
+
+install.packages("AER")
+
+install.packages("ggplot2")
+
+library(dummies)
+
+library(AER)
+
+# dummy for the year when program started
+data$post68 = as.numeric(data$birth_year >= 68)
+data1 = data[which(data$post68 == 0 & data$high_intensity == 0 ),]
+A = mean(data1$education)
+data2 = data[which(data$post68 == 1 & data$high_intensity == 0 ),]
+B = mean(data2$education)
+
+data3 = data[which(data$post68 == 0 & data$high_intensity == 1 ),]
+D = mean(data3$education)
+
+data4 = data[which(data$post68 == 1 & data$high_intensity == 1 ),]
+data4 = data[which(data$inter == 1),]
+E = mean(data4$education)
+C = A-B
+F = D-E
+G = A-D
+H = B-E
+I = G-H
+#
+result1 = lm(education~post68+high_intensity+inter,data)
+summary(result)
