@@ -1,10 +1,10 @@
 
 clc
 clear all
-z = xlsread('NPA_data (Recovered).xlsx','npa as t and all other at t-1');
+z = xlsread(data_file);
 bank      = z(:,1);    % /country id    
- t     = z(:,2);    % time period for particular cross-section  
- largeT        = z(:,3);    % Capital T for FOT  
+t     = z(:,2);    % time period for particular cross-section  
+largeT        = z(:,3);    % Capital T for FOT  
 KK = z(:,4);    % no. of observations    
 deposit = z(:,5); % deposit growth rate taken as log(yt)-log(yt-1) from excel
 indicator1      = z(:,6);    
@@ -30,6 +30,7 @@ y = indicator1;
 yt = tr(y,largeT,t);
 
 x=[deposit, car, opeta, mshare, linsize, profit,creditB];
+% if you want to do forward orthogonal devitation transformation and then do the following
 k=length(x(1,:));
 xt=zeros(length(yt(:,1)),k);
 j=1;
