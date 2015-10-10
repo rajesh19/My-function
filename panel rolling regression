@@ -1,0 +1,85 @@
+
+clc
+clear all
+z = xlsread('NPA_data (Recovered).xlsx','npa as t and all other at t-1');
+bank      = z(:,1);    % /country id    
+ t     = z(:,2);    % time period for particular cross-section  
+ largeT        = z(:,3);    % Capital T for FOT  
+KK = z(:,4);    % no. of observations    
+deposit = z(:,5); % deposit growth rate taken as log(yt)-log(yt-1) from excel
+indicator1      = z(:,6);    
+indicator2 = z(:,7);
+indicator3     = z(:,8);               
+indicator4 =   z(:,9);                          
+linsize =          z(:,10);                     
+opeta =           z(:,11);                          
+car = z(:,12);                
+mshare =      z(:,13);            % mrket share
+creditB =            z(:,14)/100;                   % credit growth rate bankwise
+creditO = z(:,15);     %                   credit growth overall banking system
+GDPgr=           z(:,16);       % GDP growth rate
+infrwpi=        z(:,17);              % WPI
+infrcpi = z(:,18);                  % CPI
+lendr = z(:,19);                    % lending rate
+reer = z(:,20);                     % REER
+neer = z(:,21); % NEER
+profit = z(:,22); % profit
+wage = z(:,23); % wageexp
+
+y = indicator1;
+yt = tr(y,largeT,t);
+
+x=[deposit, car, opeta, mshare, linsize, profit,creditB];
+k=length(x(1,:));
+xt=zeros(length(yt(:,1)),k);
+j=1;
+while j <=k
+    xt(:,j)=tr(x(:,j), largeT,t);
+    j=j+1;
+end;
+d = 7; % its the index used to do sorting and then rolling regression is done on its basis
+[X,I] = sort(xt(:,d));
+x = xt(I,:);
+y = yt(I,:);
+y = y(1:end,:);
+x = x(1:end,:);
+k = 1;
+for i = 1:length(y)-200
+    [beta, se_beta, beta_low, beta_high, t_stat] = OLS_mine(y(i:i+199,1),x(i:i+199,:),k);
+    x_lallu(i,1) = median(x(i:i+199,d));
+    x_lallu1(i,1) = mean(x(i:i+199,d));
+   
+    Beta(:,i) = beta;
+    Beta_low(:,i) = beta_low;
+    Beta_high(:,i) = beta_high;
+    T_STAT(:,i) = t_stat;
+    
+end
+y_lallu = Beta(d+k,:);
+y_lallu = y_lallu';
+%x_lallu = x(301:1000,d);
+%plot(x_lallu1,y_lallu)
+plot(x_lallu1,y_lallu, '-')
+hold on
+plot(x_lallu1, Beta_low(d+k,:)', 'k:')
+hold on 
+plot(x_lallu1, Beta_high(d+k,:)', ':')
+
+
+% subplot(1,2,1),plot(x_lallu,y_lallu)
+% hold on
+% subplot(1,2,1),plot(x_lallu, Beta_low(d+k,:)', 'k:')
+% hold on 
+% subplot(1,2,1),plot(x_lallu, Beta_high(d+k,:)', 'k:')
+% subplot(1,2,2),plot(x_lallu, T_STAT(d+k,:)')
+
+
+
+
+
+
+
+
+
+
+
