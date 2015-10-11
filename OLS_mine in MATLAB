@@ -1,0 +1,16 @@
+function [beta, se_beta, beta_low, beta_high, t_stat] = OLS_mine(Y,X,Constant)
+% for intercept
+if Constant == 1
+    X = [ones(length(Y),1) X];
+end
+beta = inv(X'*X)*X'*Y;
+e = Y-X*beta;
+dof_e = length(Y)-length(beta);
+sse = e'*e/dof_e;
+cov_mat = sse * inv(X'*X);
+se_beta = sqrt(diag(cov_mat));
+t_stat = abs(beta./se_beta);
+beta_low = beta-se_beta;
+beta_high = beta+se_beta;
+
+end
