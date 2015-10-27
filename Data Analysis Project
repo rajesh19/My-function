@@ -1,0 +1,185 @@
+# Title
+
+"Is there any relationship between marital status and socio-economic index in USA: Evidence from GSS data "
+
+**Date: 27thOct2015**
+
+```{r echo=FALSE}
+
+library('foreign')
+
+mydata <- read.dta("D:/data/gss data/GSS7214_R4.dta")
+data = mydata[,c('sei','divorce','marital','spevwork')]
+
+attach(data)
+
+
+```
+
+
+## 1. Introduction:
+
+Does the institution of marriage brings social and economic benefits? Marriage can bring benefits in terms of increased wealth if the spouse is working and bringing home some income [1]. Further, married couple can share household responsibilities by working longer in office which is more difficult for single parent [1]. Research have found that people without continuos marriges have lower wealth as compered to people with continuous marriage [2]. This study seeks to find relationship between marrital status and socio-economic index of individuals using GSS data for the period of 1972-2014. In addition to this we also tried to understand whether mearly marrying is enough or working spouse brings benefits. Therefore, we also try to locate the relationship between socio-economic index and whether spouse has worked for one full year or not. The data sample corresponds to US citizens who are randomly selected and is representative of US population. Therefore results generated from this analysis can be generalised to entire US population.  
+
+### Research Question:
+
+#### **Primary Question**:
+
+  >>*Is there any relationship between marital status and socio-economic index of US citizens*
+
+#### **Secondary Questions**:
+
+  >*Does Divorced people have higher/lower socio-economic index than married but not divorced.*
+
+  >*Does working spouse has positive effect on socio-economic status?*
+
+## 2. Data:
+
+**2.1 Data collection**: The data is extracted from `General Social Survey` and the period of analysis is `1972-2014`.The survey is conducted face-to-face with an in-person interview by the National Opinion Research Center at the University of Chicago, of adults (18+) in randomly selected households in U.S.A[3,4]
+
+**2.2 Cases**: People are the cases
+
+**2.3 variables**:
+
+* **Marital Status (marital)**
+    * Married
+    * Widowed
+    * Divorced
+    * Seperated
+    * Never Married
+  
+* **Socio-Economic Index (sei)**: 
+    * This is numerical variable with high value indicates higher socio-economic index
+* **Whether Divorced or Not (divorced)** 
+    * Yes
+    * No
+* **Whether spouse worked for one full year or not (spevwork)** - .
+    * Yes
+    * No
+    
+**2.4 Study**: This study is an observational study as the data is collected by National Opinion Research Center (NORC) at the University of Chicago. We arrive at this conclusion because here random sampling is done not the random assignment into treatment and control groups.
+
+**2.5 Scope of inference- generalizability** - The population of interest is adults (18+) in U.S.A. 
+The results from this study can be generalized to the population as data is collected through random sample. Non-repoonses from individuals with very high or very low socio-economic index may be a source of potential bias. 
+
+**2.6 Scope of inference - causality** No, this data and analysis can't be used to establish causal links between the variables of interest. This is because analysis is not experimental, rather it is based on observational data. We can deduce only correlational effects not the causal effects between variables of interest
+
+```{r}
+
+### Exploratory data analysis:
+summary(marital)
+summary(divorce)
+summary(sei)
+summary(spevwork)
+boxplot(sei~divorce)
+boxplot(sei~spevwork)
+boxplot(sei~marital)
+
+
+```
+### Noteworthy observations from exploratory analysis:
+
+1. If people are not divorced, then median socio-economic index is higher.
+2. If spouse ever worked for one full year or more then socio-economic index is high
+3. As compared to all categories (separated, widowed, divorced, never married), the median socio-economic index is higher for married population.
+
+
+## 3. Inference:
+
+### 3.1 Hypotheses
+** Primary Research Question**
+
+  >$H_0$: In USA population, there is no relationship between socio-economic index and marital status
+  >$H_1$: In USA population, there is relationship between socio-economic index and marital status
+  
+**Secondary Research Question-A**
+
+  >$H_0$: In USA population, there is no relationship between socio-economic index and marital status
+  >$H_1$: In USA population, there is relationship between socio-economic index and marital status
+**Secondary Research Question-B**
+
+  >$H_0$: In USA population, there is no relationship between socio-economic index and marital status
+  >$H_1$: In USA population, there is relationship between socio-economic index and marital status
+
+
+### 3.2 Check conditions
+
+### 3.3 State the method(s) to be used and why and how
+
+### 3.4 Perform inference
+
+```{r}
+# 3.4.1 Marital status and Socio-Economic Index
+
+#In this regression, we consider socio-economic index as response (dependent) variable and marital status as explantory variable. As explanatory variable is categorical variable, we take married individuals as base case.
+
+data_m = data[,c('sei', 'marital')]
+data_m = na.omit(data_m)
+sum3 = lm(sei~marital, data_m)
+summary(sum3)
+
+```
+
+```{r}
+### Discussion:
+#As our base case is married individuals the coefficient on other explantory variables indicate that `on an average` socio-economic index of people with such status have value bigger or lower than that of married individuals. We can observe that persons of all other categories have lower socio-economic status as compared to married individuals which is evident from negative sign on widowed, divorced, seperated and never married individuals. The largest negative effect is on widowed and seperated people.
+
+```
+  
+```{r}
+
+# 3.4.2 Divorce status and and Socio-Economic Index
+
+#In this part of analysis, we analyse whether divorced persons are any different from no-divorced persons in terms of socio-economic index.Here, we consider socio-economic index as response (dependent) variable and divorce as explantory variable. As explanatory variable is categorical variable, we take divorceed individuals as base case
+
+
+data_d = data[,c('sei','divorce')]
+data_d = na.omit(data_d)
+sum1 = lm(sei~divorce, data_d)
+summary(sum1)
+
+```
+
+```{r}
+### Discussion:
+#As our base case is divorced individuals, the coefficient on other explantory variables indicates that `on an average` socio-economic index of non-divorced people have value bigger or lower than that of divorced individuals by slope coefficient. We can observe that slope parameter is positive and significant at 1 percent which indicates that non-divorced individuals has higher socio-economic index than divorced individuals.
+
+```
+
+
+```{r}
+# 3.4.3 Spouse worked or not and Socio-Economic Index
+
+
+#In this sub-section, we want to analyse whether working spouse has any effect on socio-economic index of people. Working status of spouse is proxied by "spevwork" which asks people whether spouse has worked for one year or not.  In this regression, we consider socio-economic index as response (dependent) variable and spevwork as explantory variable. As explanatory variable is categorical variable, we take spouse who worked for one year or more as the as base case
+
+data_s = data[,c('sei','spevwork')]
+data_s = na.omit(data_s)
+sum2 = lm(sei~spevwork, data_s)
+summary(sum2)
+
+```
+
+```{r}
+
+### Discussion:
+#As our base case is individuals whose spouse has worked for one year or more, the coefficient on explantory variables indicate that `on an average` socio-economic index of people with working spouse have value bigger or lower than that of individuals with non-working spouse. We can observe that persons with non-working spouse have lower socio-economic status as compared to persons with working spouse which is evident from negative sign on slope coefficient. 
+
+```
+
+## 4. Conclusion:
+We observe that married people in USA has higher socio-economic status as compared to widowed,seperated, widowed and unmarried people. Also, we find that divorced people have lower socio-economic status as compared to married people. Among married people, all those for whom spouse has worked for one year or more have higher socio-economic index.  This study has few caveats. First, as we focussed on bi-variate relationship our results suffer from omitted variable bias. 
+
+
+### References:
+`[1]` //www.today.com/money/why-married-people-tend-be-wealthier-its-complicated-1C8364877. Accessed on 27.10.2015
+
+`[2]` Wilmoth, J., & Koso, G. (2002). Does marital history matter? Marital status and wealth outcomes among preretirement adults. Journal of Marriage and Family, 64(1), 254-268.
+
+`[3]` Smith, Tom W.; Marsden, Peter V; Michael Hout. General Social Surveys, 1972-2014: cumulative codebook / Principal Investigator, Tom W. Smith; Co-Principal Investigators, Peter V. Marsden and Michael Hout. -- Chicago: National Opinion Research Center, 2015. 3,505 pp., 28cm. -- (National Data Program for the Social Sciences Series, no. 23)
+
+`[4]` https://en.wikipedia.org/wiki/General_Social_Survey. Accessed on 27.10.2015
+
+### Appendix:
+
+Insert appendix here...
